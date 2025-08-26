@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,9 +40,10 @@ public class SecurityConfig {
 			eh.authenticationEntryPoint(authEntryPoint)        // 구현체에서 오버라이딩한 메서드를 여기서 호출해줌 ! 
 		)
 		
-		.authorizeHttpRequests(auth -> 
-			auth.requestMatchers("/login", "/signup").permitAll()
-				.anyRequest().authenticated()
+		.authorizeHttpRequests(auth ->  
+			auth.requestMatchers("/login", "/signup").permitAll() // 로그인 안한 사용자도 접근할 수 있도록 설정한 부분
+				.requestMatchers(HttpMethod.GET, "/board", "/board/*").permitAll()   // '/board' 로 설정하면 글작성도 로그인 안해도 되는거라서.. 따로 메서드로 지정해줄 거임 
+				.anyRequest().authenticated()				// 로그인한 사람도 보게 해줄거면 이걸 빼면 됨 
 		);
 		//jwt filter 적용되게 해달라고 설정해 줘야함 (jwt 필터 만든 후 여기로 넘어와서 아래 코드 추가한거임 )
 	

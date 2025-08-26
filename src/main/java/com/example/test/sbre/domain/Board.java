@@ -22,7 +22,7 @@ public class Board {
 	private String content;
 	
 	@ManyToOne
-	private Member write;
+	private Member writer;
 	
 	
 }
